@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './ModalAddProduct.css';
 
 function ModalAddProduct({ openModal, setOpenModal }) {
+  const [productPrice, setProductPrice] = useState('');
   const handleModalClose = () => {
     setOpenModal(false);
   };
@@ -15,6 +16,10 @@ function ModalAddProduct({ openModal, setOpenModal }) {
     const productQuantity = document.getElementById('productQuantity').value;
     const productPrice = document.getElementById('productPrice').value;
     const productImage = document.getElementById('productImage').files[0]; // Obter o arquivo da imagem
+    console.log(productImage);
+
+    const numericPrice = parseFloat(productPrice.replace(/[^\d,]/g, '').replace(',', '.'));
+
 
     // Criar um objeto com os dados do produto
     const formData = new FormData();
@@ -23,12 +28,18 @@ function ModalAddProduct({ openModal, setOpenModal }) {
     const productData = {
       name: productName,
       quantity: Number(productQuantity),
-      price: Number(productPrice),
+      price: Number(numericPrice) / 100,  
     };
-    
+
     formData.append('productData', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
     
-    formData.append('image', productImage);
+    if (productImage) {
+      formData.append('image', productImage);
+    } else {
+      formData.append('image', null); // ou qualquer valor que você deseje enviar quando não há imagem
+    }
+
+    console.log('FormData:', formData);
 
     // Enviar os dados para a API
     try {
@@ -38,6 +49,7 @@ function ModalAddProduct({ openModal, setOpenModal }) {
       });
 
       if (!response.ok) {
+        console.log('response:', response);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
@@ -55,6 +67,12 @@ function ModalAddProduct({ openModal, setOpenModal }) {
     if (event.target.value < 0) {
       event.target.value = '';
     }
+  };
+
+  const handlePriceChange = (event) => {
+    let value = event.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    value = (value / 100).toFixed(2); // Converte para decimal e limita a 2 casas decimais
+    setProductPrice(value);
   };
 
   return (
@@ -75,7 +93,7 @@ function ModalAddProduct({ openModal, setOpenModal }) {
             <input type="number" id="productQuantity" min="0" onInput={validatePositiveInput} required />
 
             <label htmlFor="productPrice">Preço:</label>
-            <input type="number" id="productPrice" min="0" onInput={validatePositiveInput} required />
+            <input type="text" id="productPrice" value={productPrice} onChange={handlePriceChange}required />
 
             <label htmlFor="productImage">Imagem:</label>
             <input type="file" id="productImage" accept="image/*" />

@@ -36,7 +36,9 @@
 
 .modal-content label {
   margin-bottom: 8px;
-}
+  text-align: left; /* Alinha o texto dos labels à esquerda */
+  font-size: 16px; /* Define o tamanho do texto dos labels */
+ }
 
 .modal-content input {
   padding: 10px;
@@ -71,4 +73,22 @@
 
 .modal-content .close-button:hover {
   color: #555;
+}
+
+.delete-product-button {
+  background-color: #cf3636 !important;
+  color: #fff !important;
+  margin-top: 10px !important;
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+  font-size: 13px !important;
+  width: 100% !important; /* Largura total */
+  box-sizing: border-box !important; /* Garante que padding não afeta a largura total */
+  transition: background-color 0.3s ease !important;
+}
+
+.delete-product-button:hover {
+  background-color: #cf3636 !important;
 }

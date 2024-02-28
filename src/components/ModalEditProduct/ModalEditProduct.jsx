@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import './ModalEditProduct.css';
 
-function ModalEditProduct({ openModal, setOpenModal, data }) {
-
+function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
   const [productName, setProductName] = useState('');
   const [productQuantity, setProductQuantity] = useState(null);
   const [productPrice, setProductPrice] = useState(null);
@@ -22,6 +20,12 @@ function ModalEditProduct({ openModal, setOpenModal, data }) {
 
   const handleModalClose = () => {
     setOpenModal(false);
+  };
+
+  const handlePriceChange = (event) => {
+    let value = event.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    value = (value / 100).toFixed(2); // Converte para decimal e limita a 2 casas decimais
+    setProductPrice(value);
   };
 
   const handleInputChange = (event) => {
@@ -72,6 +76,7 @@ function ModalEditProduct({ openModal, setOpenModal, data }) {
     }
 
     try {
+      console.error('ID DE EDICAO:', data.id);
       const response = await fetch(`http://localhost:8080/product/${data.id}`, {
         method: 'PUT',
         headers: {
@@ -89,6 +94,26 @@ function ModalEditProduct({ openModal, setOpenModal, data }) {
       setOpenModal(false);
     } catch (error) {
       console.error('Error:', error);
+    }
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      console.error('ID DE EXCLUSAO: ',data.id);
+      const response = await fetch(`http://localhost:8080/product/${data.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      console.log('Delete Success:', responseData);
+      setOpenModal(false);
+      onDelete(data.id);
+    } catch (error) {
+      console.error('Delete Error:', error);
     }
   };
 
@@ -110,12 +135,16 @@ function ModalEditProduct({ openModal, setOpenModal, data }) {
             <input type="number" name="productQuantity" id="productQuantity" value={productQuantity || ''} onChange={handleInputChange} required />
 
             <label htmlFor="productPrice">Preço:</label>
-            <input type="number" name="productPrice" id="productPrice" value={productPrice || ''} onChange={handleInputChange} required />
+            <input type="text" id="productPrice" value={productPrice} onChange={handlePriceChange} required />
 
             <label htmlFor="productImage">Imagem:</label>
             <input type="file" name="productImage" id="productImage" onChange={handleInputChange} accept="image/*" />
 
             <button type="submit">Atualizar Dados</button>
+
+            <button type="button" className="delete-product-button" onClick={handleDeleteClick}>
+              Excluir Produto
+            </button>
           </form>
         </div>
       </div>
@@ -133,6 +162,7 @@ ModalEditProduct.propTypes = {
     price: PropTypes.number,
     image: PropTypes.string,
   }),
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default ModalEditProduct;
