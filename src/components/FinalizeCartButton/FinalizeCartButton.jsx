@@ -5,11 +5,12 @@ import axios from 'axios'; // Importando axios
 import './FinalizeCartButton.css';
 
 function FinalizeCartButton() {
-  const { cartItems, /*clearCart*/ } = useContext(AppContext);
+  const { cartItems } = useContext(AppContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleButtonClick = async () => {
-    setIsModalVisible(true); //temporário nesta posição
+    setIsModalVisible(true);
+
     try {
 
       let purchaseRequest = {
@@ -18,8 +19,6 @@ function FinalizeCartButton() {
 
       const response = await axios.post('http://localhost:8080/product/purchase', purchaseRequest);
       console.log(response.data);
-      // Limpar o carrinho após a finalização
-      // clearCart(); // Descomente esta linha se desejar limpar o carrinho após a finalização
       setIsModalVisible(true);
     } catch (error) {
       console.error('Erro ao finalizar o carrinho:', error);

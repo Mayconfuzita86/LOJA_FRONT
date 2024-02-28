@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import ModalUploadProduct from '../ModalEditProduct/ModalEditProduct';
+import PropTypes from 'prop-types'; // Corrigir a importação
+import ModalEditProduct from '../ModalEditProduct/ModalEditProduct';
 import { AiOutlineTool } from 'react-icons/ai';
 import './ModalEditProductButton.css';
 
-function ModalEditProductButton() {
+function ModalEditProductButton({ selectedProduct }) {
   const [openModalUpload, setOpenModalUpload] = useState(false);
 
   const handleButtonClick = () => {
-    console.log('Botão clicado'); // Adicione este log
     setOpenModalUpload(!openModalUpload);
   };
 
   return (
-    <div>    
+    <div>
       <button
         type="button"
         className="edit__product__button"
@@ -20,14 +20,20 @@ function ModalEditProductButton() {
       >
         <AiOutlineTool />
       </button>
-      <ModalUploadProduct openModal={openModalUpload} setOpenModal={setOpenModalUpload} />
+      {/* Passar o produto selecionado para a modal */}
+      <ModalEditProduct openModal={openModalUpload} setOpenModal={setOpenModalUpload} data={selectedProduct} />
     </div>
-    
   );
 }
 
 ModalEditProductButton.propTypes = {
-  // Nenhuma propriedade para definir aqui
+  selectedProduct: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    quantity: PropTypes.number,
+    price: PropTypes.number,
+    image: PropTypes.string,
+  }),
 };
 
 export default ModalEditProductButton;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import propTypes from 'prop-types';
 import { BsFillCartPlusFill } from 'react-icons/bs';
 
@@ -10,11 +10,18 @@ import ModalEditProduct from '../ModalEditProduct/ModalEditProduct';
 
 function ProductCard({ data }) {
   const { name, image, price, quantity } = data;
+  console.log(data);
   const { cartItems, setCartItems } = useContext(AppContext);
+  const [selectedProduct, setSelectedProduct] = useState(null); // Novo estado para armazenar o ID do item selecionado
 
   const appUrl = 'http://localhost:8080';
 
   const handleAddCart = () => {
+
+    if (data.quantity === 0) {
+      console.log('Quantidade indisponível');
+      return;
+    }
     // Verifica se o item já está no carrinho pelo ID
     const isItemInCart = cartItems.some((item) => item.id === data.id);
   
@@ -24,8 +31,11 @@ function ProductCard({ data }) {
       setCartItems([...cartItems, updatedData]);
     } else {
       console.log('Este item já está no carrinho');
-
     }
+  };
+
+  const handleEditModal = () => {
+    setSelectedProduct(data);
   };
   
 
@@ -39,7 +49,7 @@ function ProductCard({ data }) {
       <div className="card__infos">
         <h2 className="card__price">{formatCurrency(price, 'BRL')}</h2>
         <h2 className="card__name">{name}</h2>
-        <p className="card__stock">Estoque: {quantity} unidades</p>
+        <p className="card__stock">{quantity === 0 ? 'INDISPONÍVEL' : `Estoque: ${quantity} unidade(s)`}</p>       
       </div>
 
       <div className="card__buttons">
@@ -49,8 +59,8 @@ function ProductCard({ data }) {
         
       </div>
       <div className="card__buttons">
-        <button type="button" className="button__edit-cart">
-          <ModalEditProductButton />
+        <button type="button" className="button__edit-cart"  onClick={handleEditModal}>
+          <ModalEditProductButton selectedProduct={selectedProduct} />
           <ModalEditProduct />
         </button>
       </div>
