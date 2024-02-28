@@ -27,6 +27,27 @@
   padding: 0 35px 0 10px;
 }
 
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+  margin-top: 10px; ;
+  margin-bottom: 10px;
+}
+
+.quantity-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.quantity {
+  font-size: 1rem;
+  margin: 0 8px;
+}
+
 .button__remove-item {
   position: absolute;
   top: 0;

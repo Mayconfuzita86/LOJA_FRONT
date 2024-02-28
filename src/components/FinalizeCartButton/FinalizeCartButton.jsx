@@ -11,8 +11,12 @@ function FinalizeCartButton() {
   const handleButtonClick = async () => {
     setIsModalVisible(true); //temporário nesta posição
     try {
-      // Ajuste a URL conforme necessário
-      const response = await axios.post('http://localhost:8080/api/carrinho/finalizar', cartItems);
+
+      let purchaseRequest = {
+        products: cartItems.map((item) => ({ id: item.id, quantity: item.itemQuantity })),
+      };
+
+      const response = await axios.post('http://localhost:8080/product/purchase', purchaseRequest);
       console.log(response.data);
       // Limpar o carrinho após a finalização
       // clearCart(); // Descomente esta linha se desejar limpar o carrinho após a finalização

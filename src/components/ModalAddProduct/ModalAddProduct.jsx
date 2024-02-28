@@ -17,21 +17,24 @@ function ModalAddProduct({ openModal, setOpenModal }) {
     const productImage = document.getElementById('productImage').files[0]; // Obter o arquivo da imagem
 
     // Criar um objeto com os dados do produto
+    const formData = new FormData();
+
+    // Adicionar os dados do produto ao FormData
     const productData = {
       name: productName,
       quantity: Number(productQuantity),
       price: Number(productPrice),
-      image: productImage,
     };
+    
+    formData.append('productData', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
+    
+    formData.append('image', productImage);
 
     // Enviar os dados para a API
     try {
       const response = await fetch('http://localhost:8080/product', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productData),
+        body: formData,
       });
 
       if (!response.ok) {
