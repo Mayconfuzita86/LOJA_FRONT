@@ -1,4 +1,3 @@
-// Em Cart.js
 import React, { useContext, useEffect, useState } from 'react';
 import './Cart.css';
 import CartItem from '../CartItem/CartItem';

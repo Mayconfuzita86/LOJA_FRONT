@@ -25,8 +25,6 @@ function ModalAddProductButton() {
   );
 }
 
-ModalAddProductButton.propTypes = {
-  // Nenhuma propriedade para definir aqui
-};
+ModalAddProductButton.propTypes = {};
 
 export default ModalAddProductButton;

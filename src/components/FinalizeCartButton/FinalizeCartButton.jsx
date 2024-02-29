@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import AppContext from '../../context/AppContext';
 import FinalizeCartModal from '../FinalizeCartModal/FinalizeCartModal';
-import axios from 'axios'; // Importando axios
+import axios from 'axios';
 import './FinalizeCartButton.css';
 
 function FinalizeCartButton() {

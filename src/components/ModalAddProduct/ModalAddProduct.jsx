@@ -11,20 +11,16 @@ function ModalAddProduct({ openModal, setOpenModal }) {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // Coletar os valores dos campos do formulário
     const productName = document.getElementById('productName').value;
     const productQuantity = document.getElementById('productQuantity').value;
     const productPrice = document.getElementById('productPrice').value;
-    const productImage = document.getElementById('productImage').files[0]; // Obter o arquivo da imagem
+    const productImage = document.getElementById('productImage').files[0];
     console.log(productImage);
 
     const numericPrice = parseFloat(productPrice.replace(/[^\d,]/g, '').replace(',', '.'));
 
-
-    // Criar um objeto com os dados do produto
     const formData = new FormData();
 
-    // Adicionar os dados do produto ao FormData
     const productData = {
       name: productName,
       quantity: Number(productQuantity),
@@ -36,12 +32,11 @@ function ModalAddProduct({ openModal, setOpenModal }) {
     if (productImage) {
       formData.append('image', productImage);
     } else {
-      formData.append('image', null); // ou qualquer valor que você deseje enviar quando não há imagem
+      formData.append('image', null);
     }
 
     console.log('FormData:', formData);
 
-    // Enviar os dados para a API
     try {
       const response = await fetch('http://localhost:8080/product', {
         method: 'POST',
@@ -55,7 +50,6 @@ function ModalAddProduct({ openModal, setOpenModal }) {
 
       const data = await response.json();
       console.log('Success:', data);
-      // Fechar a modal após o envio do formulário
       setOpenModal(false);
       window.location.reload();
     } catch (error) {
@@ -70,8 +64,8 @@ function ModalAddProduct({ openModal, setOpenModal }) {
   };
 
   const handlePriceChange = (event) => {
-    let value = event.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-    value = (value / 100).toFixed(2); // Converte para decimal e limita a 2 casas decimais
+    let value = event.target.value.replace(/\D/g, '');
+    value = (value / 100).toFixed(2); 
     setProductPrice(value);
   };
 

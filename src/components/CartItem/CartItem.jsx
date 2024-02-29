@@ -1,4 +1,3 @@
-// Em CartItem.js
 import React, { useContext, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { BsCartDashFill, BsChevronUp, BsChevronDown } from 'react-icons/bs';
@@ -40,9 +39,7 @@ function CartItem({ data, setTotalPrice }) {
     );
   };
 
-  useEffect(() => {
-    // Atualizar o total aqui, se necessário
-  }, [itemQuantity, price, setTotalPrice]);
+  useEffect(() => {}, [itemQuantity, price, setTotalPrice]);
 
   const imageUrl = typeof image === 'string' ? `${appUrl}/image/${image}` : `${appUrl}/image/d780bb11-f449-4863-aaf6-d874866e0e3c.jpg`;
 

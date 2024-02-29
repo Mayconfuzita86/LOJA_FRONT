@@ -12,7 +12,7 @@ function ProductCard({ data }) {
   const { name, image, price, quantity } = data;
   console.log(data);
   const { cartItems, setCartItems } = useContext(AppContext);
-  const [selectedProduct, setSelectedProduct] = useState(null); // Novo estado para armazenar o ID do item selecionado
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const appUrl = 'http://localhost:8080';
 
@@ -22,11 +22,10 @@ function ProductCard({ data }) {
       console.log('Quantidade indisponível');
       return;
     }
-    // Verifica se o item já está no carrinho pelo ID
+    //verifica se ja existe o item no carrinho
     const isItemInCart = cartItems.some((item) => item.id === data.id);
   
     if (!isItemInCart) {
-      // Se o item não estiver no carrinho, adiciona
       const updatedData = { ...data, itemQuantity: 1 };
       setCartItems([...cartItems, updatedData]);
     } else {
@@ -39,7 +38,7 @@ function ProductCard({ data }) {
   };
   
 
-  // Verifique se 'image' é uma string antes de chamar 'replace'
+  // seta imagem carregada ou imagem default para produtos sem imagem
   const imageUrl = typeof image === 'string' ? `${appUrl}/image/${image}` : `${appUrl}/image/d780bb11-f449-4863-aaf6-d874866e0e3c.jpg`;
 
   return (

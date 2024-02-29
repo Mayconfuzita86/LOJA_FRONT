@@ -20,7 +20,7 @@ function ModalEditProductButton({ selectedProduct }) {
       >
         <AiOutlineTool />
       </button>
-      {/* Passar o produto selecionado para a modal */}
+      {/* assim pasamos o produto para a modal */}
       <ModalEditProduct openModal={openModalUpload} setOpenModal={setOpenModalUpload} data={selectedProduct} />
     </div>
   );

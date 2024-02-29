@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import ModalDeleteConfirmation from '../ModalDeleteConfirmation/ModalDeleteConfirmation';
 import './ModalEditProduct.css';
 
 function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
@@ -7,6 +8,7 @@ function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
   const [productQuantity, setProductQuantity] = useState(null);
   const [productPrice, setProductPrice] = useState(null);
   const [productImage, setProductImage] = useState(null);
+  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
   useEffect(() => {
     console.log('Product Data:', data);
@@ -23,8 +25,8 @@ function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
   };
 
   const handlePriceChange = (event) => {
-    let value = event.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-    value = (value / 100).toFixed(2); // Converte para decimal e limita a 2 casas decimais
+    let value = event.target.value.replace(/\D/g, '');
+    value = (value / 100).toFixed(2);
     setProductPrice(value);
   };
 
@@ -54,6 +56,9 @@ function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
       break;
     }
   };
+  console.log('FOTO IMAGEM:', productImage);
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -70,13 +75,17 @@ function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
       price: Number(productPrice),
     };
 
+    console.log('DADOS: ', data);
+
     if (productImage) {
+      
+      console.log('FOTO: ', productImage);
+
       const file = new File([productImage], data.name, { type: 'image/*' });
       productDataJSON.image = file;
     }
 
     try {
-      console.error('ID DE EDICAO:', data.id);
       const response = await fetch(`http://localhost:8080/product/${data.id}`, {
         method: 'PUT',
         headers: {
@@ -92,14 +101,23 @@ function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
       const responseData = await response.json();
       console.log('Success:', responseData);
       setOpenModal(false);
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  const handleDeleteClick = async () => {
+  const handleDeleteClick = () => {
+    setConfirmationModalOpen(true); 
+  };
+
+  const handleConfirmationCancel = () => {
+    setConfirmationModalOpen(false);
+  };
+
+  const handleConfirmationConfirm = async () => {
     try {
-      console.error('ID DE EXCLUSAO: ',data.id);
+      console.error('ID DE EXCLUSAO: ', data.id);
       const response = await fetch(`http://localhost:8080/product/${data.id}`, {
         method: 'DELETE',
       });
@@ -114,41 +132,50 @@ function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
       onDelete(data.id);
     } catch (error) {
       console.error('Delete Error:', error);
+    } finally {
+      setConfirmationModalOpen(false);
     }
   };
 
   return (
-    openModal && (
-      <div className="modal-overlay" onClick={handleModalClose}>
-        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <header>
-            <h2>Editar Produto</h2>
-            <span className="close-button" onClick={handleModalClose}>
-              &times;
-            </span>
-          </header>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="productName">Nome:</label>
-            <input type="text" name="productName" id="productName" value={productName} onChange={handleInputChange} required />
+    <>
+      {openModal && (
+        <div className="modal-overlay" onClick={handleModalClose}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <header>
+              <h2>Editar Produto</h2>
+              <span className="close-button" onClick={handleModalClose}>
+                &times;
+              </span>
+            </header>
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="productName">Nome:</label>
+              <input type="text" name="productName" id="productName" value={productName} onChange={handleInputChange} required />
 
-            <label htmlFor="productQuantity">Quantidade:</label>
-            <input type="number" name="productQuantity" id="productQuantity" value={productQuantity || ''} onChange={handleInputChange} required />
+              <label htmlFor="productQuantity">Quantidade:</label>
+              <input type="number" name="productQuantity" id="productQuantity" value={productQuantity || ''} onChange={handleInputChange} required />
 
-            <label htmlFor="productPrice">Preço:</label>
-            <input type="text" id="productPrice" value={productPrice} onChange={handlePriceChange} required />
+              <label htmlFor="productPrice">Preço:</label>
+              <input type="text" id="productPrice" value={productPrice} onChange={handlePriceChange} required />
 
-            <label htmlFor="productImage">Imagem:</label>
-            <input type="file" name="productImage" id="productImage" onChange={handleInputChange} accept="image/*" />
+              <label htmlFor="productImage">Imagem:</label>
+              <input type="file" name="productImage" id="productImage" onChange={handleInputChange} accept="image/*" />
 
-            <button type="submit">Atualizar Dados</button>
+              <button type="submit">Atualizar Dados</button>
 
-            <button type="button" className="delete-product-button" onClick={handleDeleteClick}>
-              Excluir Produto
-            </button>
-          </form>
+              <button type="button" className="delete-product-button" onClick={handleDeleteClick}>
+                Excluir Produto
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    )
+      )}
+      <ModalDeleteConfirmation
+        isOpen={isConfirmationModalOpen}
+        onCancel={handleConfirmationCancel}
+        onConfirm={handleConfirmationConfirm}
+      />
+    </>
   );
 }
 
