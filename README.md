@@ -6,10 +6,11 @@ Front-end de um e-commerce, utilizando React e arquitetura de componentes
 
 ## 🚀 Tecnologias Utilizadas
 
-Html
-Css
-JavaScript
-React
+- Html
+- Css
+- JavaScript
+- React
+  
 ### 📋 Pré-requisitos
 
 Node instalado
@@ -18,17 +19,23 @@ Necessário API em funcionamento> https://github.com/Mayconfuzita86/API_STORE
 
 ### 🔧 Instalação
 
-Baixe o arquivo .zip;
+- Baixe o arquivo .zip;
 
-Descompacte e abra no VsCode;
+- Descompacte e abra no VsCode;
 
-Instale/execute as dependências:
+- Instale/execute as dependências:
 
-npm i react-icons
-npx eslint –init
-rode o projeto com:
+- `npm i react-scripts`
 
-npm start
+-  `npm install`
+
+- `npm i react-icons`
+
+- `npx eslint –init`
+
+- validado a API conectada ao banco, rode o projeto com:
+
+- `npm start`
 
 ---
 ⌨️ por [@mayconfuzita](https://gist.github.com/Mayconfuzita86) 😊
