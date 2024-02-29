@@ -15,7 +15,6 @@ function ModalAddProduct({ openModal, setOpenModal }) {
     const productQuantity = document.getElementById('productQuantity').value;
     const productPrice = document.getElementById('productPrice').value;
     const productImage = document.getElementById('productImage').files[0];
-    console.log(productImage);
 
     const numericPrice = parseFloat(productPrice.replace(/[^\d,]/g, '').replace(',', '.'));
 
@@ -34,8 +33,6 @@ function ModalAddProduct({ openModal, setOpenModal }) {
     } else {
       formData.append('image', null);
     }
-
-    console.log('FormData:', formData);
 
     try {
       const response = await fetch('http://localhost:8080/product', {

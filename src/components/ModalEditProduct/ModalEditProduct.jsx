@@ -56,9 +56,6 @@ function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
       break;
     }
   };
-  console.log('FOTO IMAGEM:', productImage);
-
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -67,31 +64,31 @@ function ModalEditProduct({ openModal, setOpenModal, data, onDelete }) {
       console.error('Product data is undefined');
       return;
     }
+    console.log('DADOS: ', data);
+    console.log('FOTO IMAGEM:', productImage);
+    const formData = new FormData();
 
-    const productDataJSON = {
+    const productData = {
       id: data.id,
       name: productName,
       quantity: Number(productQuantity),
-      price: Number(productPrice),
+      price: Number(productPrice), 
     };
 
-    console.log('DADOS: ', data);
-
+    formData.append('productData', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
+    
     if (productImage) {
-      
-      console.log('FOTO: ', productImage);
-
-      const file = new File([productImage], data.name, { type: 'image/*' });
-      productDataJSON.image = file;
+      // console.log('FOTO Maycon:', productImage);
+      formData.append('image', productImage);
+    } else {
+      formData.append('image', null);
     }
+    console.log('FORMDATA:', formData.get('image'));
 
     try {
-      const response = await fetch(`http://localhost:8080/product/${data.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productDataJSON),
+      const response = await fetch('http://localhost:8080/product/update', {
+        method: 'POST',
+        body: formData,                
       });
 
       if (!response.ok) {
