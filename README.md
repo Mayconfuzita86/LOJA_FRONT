@@ -1,3 +1,41 @@
+# LOJA_FRONT
+
+## 🚀 Descrição
+
+Front-end de um e-commerce, utilizando React e arquitetura de componentes 
+
+## 🚀 Tecnologias Utilizadas
+
+Html
+Css
+JavaScript
+React
+### 📋 Pré-requisitos
+
+Node instalado
+Banco MySql com SCHEMA ‘store’ criado e ajustado conexão na API
+Necessário API em funcionamento> https://github.com/Mayconfuzita86/API_STORE
+
+### 🔧 Instalação
+
+Baixe o arquivo .zip;
+
+Descompacte e abra no VsCode;
+
+Instale/execute as dependências:
+
+npm i react-icons
+npx eslint –init
+rode o projeto com:
+
+npm start
+
+---
+⌨️ por [@mayconfuzita](https://gist.github.com/Mayconfuzita86) 😊
+
+---
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
