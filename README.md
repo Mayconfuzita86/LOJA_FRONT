@@ -23,8 +23,6 @@ Antes de iniciar, certifique-se de ter os seguintes itens configurados em sua m�
 
 ---
 
-## 🔧 Instalação e Execução
-
-1. Clone este repositório ou faça o download do arquivo `.zip`:
+Clone este repositório ou faça o download do arquivo `.zip`:
    ```bash
    git clone [https://github.com/Mayconfuzita86/LOJA_FRONT.git](https://github.com/Mayconfuzita86/LOJA_FRONT.git)
